@@ -1,4 +1,33 @@
 ## The script for the scrape is in .backend/utils/scrape_judicial_processes
+# Web Scraping de Procesos Judiciales
+
+Este script de Python está diseñado para realizar web scraping de los procesos judiciales a partir de un número de identificación (CI o RUC) desde el sitio web de la Función Judicial del Ecuador. Utiliza Selenium para navegar y extraer la información de los procesos judiciales, y luego guarda esos datos en un archivo CSV.
+
+## Requisitos
+
+Para ejecutar este script, necesitarás Python 3 y algunas dependencias. Asegúrate de tener instalado Python 3.6 o superior. Puedes instalar las dependencias necesarias usando `pip`:
+
+```bash
+pip install selenium pandas beautifulsoup4
+Además, necesitarás el WebDriver para Chrome. Asegúrate de descargar la versión correcta del WebDriver que corresponda a la versión de tu navegador Chrome desde aquí.
+
+Configuración
+Antes de ejecutar el script, asegúrate de colocar el ejecutable del WebDriver en tu PATH o modificar el script para que apunte a la ubicación del ejecutable.
+
+Uso
+Para ejecutar el script, simplemente navega al directorio donde se encuentra el archivo y ejecuta:
+
+bash
+Copy code
+python nombre_del_archivo.py
+El script iniciará varias solicitudes paralelas para raspar los datos judiciales de los números de identificación especificados en el método test_parallel_requests.
+
+Funciones Principales
+scrape_judicial_processes(id_number): Realiza el web scraping de los procesos judiciales para el número de identificación proporcionado.
+
+save_data(data, name): Guarda los datos recopilados en un archivo CSV.
+
+test_parallel_requests(): Prueba el web scraping con múltiples solicitudes paralelas, utilizando threading para mejorar la eficiencia.
 
 ## Technology Stack and Features
 

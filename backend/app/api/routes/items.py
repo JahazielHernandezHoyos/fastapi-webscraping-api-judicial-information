@@ -1,6 +1,6 @@
 from typing import Any
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Query
 
 from app.api.deps import CurrentUser, SessionDep
 from utils.scrape_judicial_processes import scrape_judicial_processes
@@ -9,14 +9,21 @@ router = APIRouter()
 
 
 @router.get("/{id}")
-def read_item(session: SessionDep, current_user: CurrentUser, id: int) -> Any:
+def read_document(
+    session: SessionDep,
+    current_user: CurrentUser,
+    id: int,
+    entity_type: str = Query(..., regex="^(natural|juridica)$"),
+) -> Any:
     """
-    Get item by ID.
+    Get item by ID_document.
     """
     id_document = id
     if not id_document:
         raise HTTPException(status_code=404, detail="Item not found")
     if not current_user.is_superuser:
         raise HTTPException(status_code=400, detail="Not enough permissions")
-    return scrape_judicial_processes(id_document)
-
+    try:
+        return scrape_judicial_processes(id_document, entity_type)
+    except Exception as e:
+        raise HTTPException(status_code=404, detail=str(e))

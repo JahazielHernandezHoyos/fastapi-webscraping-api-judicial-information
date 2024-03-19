@@ -1,17 +1,18 @@
 import threading
 import time
 
+import chromedriver_autoinstaller
 import pandas as pd
 from bs4 import BeautifulSoup
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
-# Punto 1: Web Scraping
+chromedriver_autoinstaller.install()
 
-
-def scrape_judicial_processes(id_number):
+def scrape_judicial_processes(id_number, person_type):
     """
     Función para realizar el web scraping de los procesos judiciales.
 
@@ -22,8 +23,17 @@ def scrape_judicial_processes(id_number):
     Returns:
         list: Lista de diccionarios con la información de los procesos judiciales.
     """
+    chrome_options = Options()
+    chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--no-sandbox")  # Bypass OS security model
+    chrome_options.add_argument(
+        "--disable-dev-shm-usage"
+    )  # Overcome limited resource problems
+    chrome_options.add_argument("--disable-gpu")  # Applicable to windows os only
+    chrome_options.add_argument("--disable-extensions")
+
     # Inicializar el controlador del navegador (en este caso, Chrome)
-    driver = webdriver.Chrome()
+    driver = webdriver.Chrome(options=chrome_options)
 
     # Abrir la página de búsqueda
     url = "https://procesosjudiciales.funcionjudicial.gob.ec/busqueda-filtros"
