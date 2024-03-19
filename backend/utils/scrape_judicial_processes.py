@@ -1,19 +1,17 @@
-import requests
-from bs4 import BeautifulSoup
-import csv
-import json
 import threading
 import time
+
+import pandas as pd
+from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-import pandas as pd
+from selenium.webdriver.support.ui import WebDriverWait
 
 # Punto 1: Web Scraping
 
 
-def scrape_judicial_processes(id_number, person_type):
+def scrape_judicial_processes(id_number):
     """
     Función para realizar el web scraping de los procesos judiciales.
 
@@ -71,7 +69,7 @@ def scrape_judicial_processes(id_number, person_type):
             fecha = causa.find(class_="fecha").text.strip()
             numero_proceso = causa.find(class_="numero-proceso").text.strip()
             accion_infraccion = causa.find(class_="accion-infraccion").text.strip()
-            detalle = causa.find(class_="detalle").text.strip()
+            # detalle = causa.find(class_="detalle").text.strip()
 
             # Agregar la información a la lista de resultados
             resultados.append(
@@ -80,15 +78,9 @@ def scrape_judicial_processes(id_number, person_type):
                     "Fecha de ingreso": fecha,
                     "No. proceso": numero_proceso,
                     "Acción / Infracción": accion_infraccion,
-                    "Detalle": detalle,
+                    # "Detalle": detalle,
                 }
             )
-            print("Numero: ", numero)
-            print("Fecha: ", fecha)
-            print("Numero proceso: ", numero_proceso)
-            print("Accion: ", accion_infraccion)
-            print("Detalle: ", detalle)
-            print("-------------------------------------------------")
 
         # Verificar si hay un botón para ir a la siguiente página
         next_button = "/html/body/app-root/app-expel-listado-juicios/expel-sidenav/mat-sidenav-container/mat-sidenav-content/section/footer/mat-paginator/div/div/div[2]/button[3]"
