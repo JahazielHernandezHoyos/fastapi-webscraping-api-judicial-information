@@ -13,7 +13,7 @@ def read_document(
     session: SessionDep,
     current_user: CurrentUser,
     id: int,
-    entity_type: str = Query(..., regex="^(natural|juridica)$"),
+    entity_type: str,
 ) -> Any:
     """
     Get item by ID_document.
